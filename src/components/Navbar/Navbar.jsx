@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setSearchQuery } from "../../redux/slices/productsSlice";
 
 const Navbar = () => {
   const cartItems = useSelector((state) => state.cart.items);
+  const dispatch = useDispatch();
+
 
   return (
     <nav className="bg-white shadow flex items-center justify-between px-6 py-3 sticky top-0 z-50">
@@ -16,6 +19,7 @@ const Navbar = () => {
         <input
           type="text"
           placeholder="Search for products..."
+          onChange={(e) => dispatch(setSearchQuery(e.target.value))}
           className="w-full border rounded px-3 py-2.5 shadow-sm focus:outline-none"
         />
       </div>

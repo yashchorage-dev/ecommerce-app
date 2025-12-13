@@ -1,13 +1,13 @@
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchSingleProduct } from "../../redux/slices/singleProductSlice";
 import { addToCart } from "../../redux/slices/cartSlice";
-
 
 const ProductDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const [selectedImage, setSelectedImage] = useState("");
 
   const { product, loading, error } = useSelector(
     (state) => state.singleProduct
@@ -16,6 +16,12 @@ const ProductDetail = () => {
   useEffect(() => {
     dispatch(fetchSingleProduct(id));
   }, [id]); // ✅ id only
+
+  useEffect(() => {
+    if (product) {
+      setSelectedImage(product.thumbnail);
+    }
+  }, [product]);
 
   if (loading) return <p className="text-center">Loading product...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
@@ -27,7 +33,7 @@ const ProductDetail = () => {
         {/* LEFT: Product Image */}
         <div className="flex-1">
           <img
-            src={product.thumbnail}
+            src={selectedImage}
             alt={product.title}
             className="w-full h-80 object-cover rounded shadow"
           />
@@ -38,7 +44,10 @@ const ProductDetail = () => {
                 key={index}
                 src={img}
                 alt="thumbnail"
-                className="w-20 h-20 object-cover rounded cursor-pointer border hover:border-black transition"
+                onClick={() => setSelectedImage(img)}
+                className={`w-20 h-20 object-cover rounded cursor-pointer border transition${
+                  selectedImage === img ? "border-black" : "border-gray-300"
+                }`}
               />
             ))}
           </div>

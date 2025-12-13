@@ -6,11 +6,18 @@ import ProductCard from "../ProductCard/ProductCard";
 const ProductList = () => {
   const dispatch = useDispatch();
 
-  const { products, loading, error } = useSelector((state) => state.products);
+const { products, loading, error, searchQuery } = useSelector(
+  (state) => state.products
+);
 
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
+
+  const filteredProducts = products.filter((product) =>
+    product.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
 
   if (loading) return <p className="text-center">Loading...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
@@ -19,8 +26,8 @@ const ProductList = () => {
     <div>
       <h2 className="text-xl font-semibold mb-4">Product List</h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {products.map((item) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-7xl mx-auto px-6">
+        {filteredProducts.map((item) => (
           <ProductCard key={item.id} product={item} />
         ))}
       </div>

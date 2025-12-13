@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const ProductCard = ({ product }) => {
   return (
     <Link to={`/products/${product.id}`}>
-      <div className="border p-4 rounded shadow hover:shadow-lg transition">
+      <div className="border p-4 rounded shadow hover:shadow-lg hover:-translate-y-1 transition">
         <img
           src={product.thumbnail}
           alt={product.title}
